@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
  *
  * ✅ @RestController, @RequestMapping, Constructor Injection ครบแล้ว
  * ✅ endpoint GET /products/{id} ทำเสร็จแล้วเป็นตัวอย่าง (30%)
- * ❌ TODO: เติม method body ของ endpoint ที่เหลือ (70%)
+ * ✅ implemented endpoint ทั้งหมดแล้ว
  *
  * Endpoints ที่ต้องทำทั้งหมด:
  *   GET    /products          → Flux<Product>   (ดึงทั้งหมด)
@@ -48,25 +48,24 @@ public class ProductController {
     }
 
     // ══════════════════════════════════════════════════════
-    // ❌ TODO: เติม method body ด้านล่างนี้
+    // Endpoint ที่ implement เพิ่มเติม
     // ══════════════════════════════════════════════════════
 
     /**
      * GET /products
-     * TODO: คืน Flux<Product> ทุกรายการ
+     * คืน Flux<Product> ทุกรายการ
      *
      * Hint: เรียก service.getAll()
      * ทดสอบ: GET http://localhost:8080/products
      */
     @GetMapping
     public Flux<Product> getAll() {
-        // TODO: เติม code ตรงนี้
-        return null; // ← แก้บรรทัดนี้
+        return service.getAll();
     }
 
     /**
      * POST /products
-     * TODO: รับ Product จาก request body แล้วบันทึก
+     * รับ Product จาก request body แล้วบันทึก
      *
      * Hint: เรียก service.save(product)
      * ทดสอบ: POST http://localhost:8080/products
@@ -74,46 +73,42 @@ public class ProductController {
      */
     @PostMapping
     public Mono<Product> save(@RequestBody Product product) {
-        // TODO: เติม code ตรงนี้
-        return null; // ← แก้บรรทัดนี้
+        return service.save(product);
     }
 
     /**
      * DELETE /products/{id}
-     * TODO: ลบ Product และคืน Mono<Void>
+     * ลบ Product และคืน Mono<Void>
      *
      * Hint: เรียก service.delete(id)
      * ทดสอบ: DELETE http://localhost:8080/products/1
      */
     @DeleteMapping("/{id}")
     public Mono<Void> delete(@PathVariable String id) {
-        // TODO: เติม code ตรงนี้
-        return null; // ← แก้บรรทัดนี้
+        return service.delete(id);
     }
 
     /**
      * GET /products/category/{category}
-     * TODO: คืน Flux<Product> ที่กรองตาม category
+     * คืน Flux<Product> ที่กรองตาม category
      *
      * Hint: เรียก service.getByCategory(category)
      * ทดสอบ: GET http://localhost:8080/products/category/Electronics
      */
     @GetMapping("/category/{category}")
     public Flux<Product> getByCategory(@PathVariable String category) {
-        // TODO: เติม code ตรงนี้
-        return null; // ← แก้บรรทัดนี้
+        return service.getByCategory(category);
     }
 
     /**
      * GET /products/{id}/price
-     * TODO: คืน Mono<Double> ราคาหลังส่วนลด
+     * คืน Mono<Double> ราคาหลังส่วนลด
      *
      * Hint: เรียก service.getDiscountedPrice(id)
      * ทดสอบ: GET http://localhost:8080/products/1/price
      */
     @GetMapping("/{id}/price")
     public Mono<Double> getDiscountedPrice(@PathVariable String id) {
-        // TODO: เติม code ตรงนี้
-        return null; // ← แก้บรรทัดนี้
+        return service.getDiscountedPrice(id);
     }
 }

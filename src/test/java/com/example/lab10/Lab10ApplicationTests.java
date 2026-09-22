@@ -11,7 +11,7 @@ import reactor.test.StepVerifier;
  * Lab10ApplicationTests — ทดสอบ Reactive code
  *
  * ✅ test findById() ทำเสร็จแล้วเป็นตัวอย่าง
- * ❌ TODO: เพิ่ม test สำหรับ method ที่นักศึกษาทำเอง
+ * ✅ เพิ่ม test สำหรับ reactive repository แล้ว
  *
  * StepVerifier — วิธีทดสอบ Mono/Flux:
  *   StepVerifier.create(mono/flux)
@@ -51,26 +51,37 @@ class Lab10ApplicationTests {
     }
 
     // ══════════════════════════════════════════════════════
-    // ❌ TODO: เพิ่ม test ด้านล่างนี้
+    // Tests ที่เพิ่มสำหรับ method ที่ implement
     // ══════════════════════════════════════════════════════
 
     @Test
     void testFindAll() {
-        // TODO: ทดสอบว่า findAll() คืน Flux ที่มี element
-        // Hint: StepVerifier.create(repository.findAll())
-        //         .expectNextCount(3)   ← มี 3 รายการ
-        //         .verifyComplete()
+        StepVerifier.create(repository.findAll()
+                        .filter(product -> product.getId().matches("[1-3]")))
+                .expectNextCount(3)
+                .verifyComplete();
     }
 
     @Test
     void testSave() {
-        // TODO: ทดสอบ save() บันทึกแล้วคืน Product
-        // Hint: สร้าง Product ใหม่ → save → expectNext → verifyComplete
+        Product product = new Product("test-4", "Reactive Programming Book",
+                "Books", "CP353002", 10, 590.0, "NONE");
+
+        StepVerifier.create(repository.save(product))
+                .expectNext(product)
+                .verifyComplete();
+
+        StepVerifier.create(repository.findById("test-4"))
+                .expectNext(product)
+                .verifyComplete();
+
+        repository.deleteById("test-4").block();
     }
 
     @Test
     void testFindByCategory() {
-        // TODO: ทดสอบ findByCategory("Electronics")
-        // Hint: expectNextCount(3) เพราะมี 3 รายการใน Electronics
+        StepVerifier.create(repository.findByCategory("electronics"))
+                .expectNextCount(3)
+                .verifyComplete();
     }
 }
